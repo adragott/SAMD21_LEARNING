@@ -56,6 +56,9 @@ void configure_usart_callbacks(void);
 struct usart_module usart_instance;
 struct usart_module gps_mod;
 
+//We don't need this enabled yet
+#define DEBUG_RX_ENABLE 0
+
 #define USART_INIT_MSSG "USART INITIALIZED\n"
 
 #define SUPERBUFF_LENGTH 1024
@@ -74,11 +77,11 @@ volatile uint8_t gps_buff[MAX_RX_BUFFER_LENGTH];
 uint8_t superBuff[SUPERBUFF_LENGTH];
 uint16_t ctr = 0;
 
-//this is useless until we set up other things. not important
-//void usart_read_debugcb(struct usart_module *const usart_module)
-//{
-	//usart_write_buffer_wait(&usart_instance, (uint8_t *)debug_buff, MAX_RX_BUFFER_LENGTH);
-//}
+//This is useless until we enable DEBUG_RX
+void usart_read_debugcb(struct usart_module *const usart_module)
+{
+	usart_write_buffer_wait(&usart_instance, (uint8_t *)debug_buff, MAX_RX_BUFFER_LENGTH);
+}
 
 //This handles the reception of data for the gps usart module
 void usart_read_gpscb(struct usart_module *const usart_module)
@@ -97,9 +100,7 @@ void usart_read_gpscb(struct usart_module *const usart_module)
 	//Here we simply pass the address of the 0th element of the array. This is the same as ==> usart_write_job(&usart_instance, gps_buff);
 	//but ONLY in this instance because it's only looking for a single element anyways and our buffer can only have 1 element inside of it at once.
 	//It's better that we explicitly say we're passing the address of the 0th element to avoid confusion
-	//This is my preferred way of doing this. Reading character by character is the easiest way to parse in C
-	
-															
+	//This is my preferred way of doing this. Reading character by character is the easiest way to parse in C					
 
 	//here we store a single character inside of superBuff, an array declared outside of our isr
 	superBuff[ctr] = gps_buff[0];
@@ -143,6 +144,7 @@ void configure_usart(void)
 	usart_init(&usart_instance, EDBG_CDC_MODULE, &config_usart);
 	usart_enable(&usart_instance);
 	usart_write_buffer_wait(&usart_instance, (uint8_t*)USART_INIT_MSSG, sizeof(USART_INIT_MSSG));
+	
 	//init and enable gps usart
 	usart_init(&gps_mod, SERCOM4, &gps_conf);
 	usart_enable(&gps_mod);
@@ -152,13 +154,15 @@ void configure_usart(void)
 void configure_usart_callbacks(void)
 {
 	//not important yet
-	//usart_register_callback(&usart_instance, usart_read_debugcb, USART_CALLBACK_BUFFER_RECEIVED);
-	//usart_enable_callback(&gps_mod, USART_CALLBACK_BUFFER_RECEIVED);
+	if(DEBUG_RX_ENABLE)
+	{
+		usart_register_callback(&usart_instance, usart_read_debugcb, USART_CALLBACK_BUFFER_RECEIVED);
+		usart_enable_callback(&usart_instance, USART_CALLBACK_BUFFER_RECEIVED);
+	}
+
 	
 	usart_register_callback(&gps_mod, usart_read_gpscb, USART_CALLBACK_BUFFER_RECEIVED);
 	usart_enable_callback(&gps_mod, USART_CALLBACK_BUFFER_RECEIVED);
-	
-
 }
 
 int main(void)
@@ -174,6 +178,12 @@ int main(void)
 	{
 		//This checks our usart buffer for received chars I'm PRETTY SURE. I could be wrong. It has an assert for rx_data so if rx_data is empty nothing happens. So no data == no interrupt trigger
 		usart_read_buffer_job(&gps_mod, (uint8_t*)gps_buff, MAX_RX_BUFFER_LENGTH);
+		
+		if(DEBUG_RX_ENABLE)
+		{
+			usart_read_buffer_job(&usart_instance, (uint8_t*)debug_buff, MAX_RX_BUFFER_LENGTH);
+		}
+		
 	}
 }
 

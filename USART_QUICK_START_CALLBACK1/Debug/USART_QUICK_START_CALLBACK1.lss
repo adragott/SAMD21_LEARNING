@@ -15,23 +15,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .comment      00000059  00000000  00000000  0002002c  2**0
                   CONTENTS, READONLY
-  6 .debug_info   0001ea58  00000000  00000000  00020085  2**0
+  6 .debug_info   0001eaa3  00000000  00000000  00020085  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00002a49  00000000  00000000  0003eadd  2**0
+  7 .debug_abbrev 00002a49  00000000  00000000  0003eb28  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_aranges 00000388  00000000  00000000  00041526  2**0
+  8 .debug_aranges 00000390  00000000  00000000  00041571  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_ranges 000003f8  00000000  00000000  000418ae  2**0
+  9 .debug_ranges 00000400  00000000  00000000  00041901  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_macro  000193e3  00000000  00000000  00041ca6  2**0
+ 10 .debug_macro  000193e9  00000000  00000000  00041d01  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_line   00008c26  00000000  00000000  0005b089  2**0
+ 11 .debug_line   00008c34  00000000  00000000  0005b0ea  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_str    0008c43f  00000000  00000000  00063caf  2**0
+ 12 .debug_str    0008c464  00000000  00000000  00063d1e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_frame  000008b0  00000000  00000000  000f00f0  2**2
+ 13 .debug_frame  000008c8  00000000  00000000  000f0184  2**2
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_loc    00003c13  00000000  00000000  000f09a0  2**0
+ 14 .debug_loc    00003c54  00000000  00000000  000f0a4c  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -3828,8 +3828,8 @@ void Dummy_Handler(void)
     1348:	00001521 	.word	0x00001521
 
 0000134c <usart_read_gpscb>:
-	//usart_write_buffer_wait(&usart_instance, (uint8_t *)debug_buff, MAX_RX_BUFFER_LENGTH);
-//}
+	usart_write_buffer_wait(&usart_instance, (uint8_t *)debug_buff, MAX_RX_BUFFER_LENGTH);
+}
 
 //This handles the reception of data for the gps usart module
 void usart_read_gpscb(struct usart_module *const usart_module)
@@ -3855,11 +3855,11 @@ void usart_read_gpscb(struct usart_module *const usart_module)
     1360:	4804      	ldr	r0, [pc, #16]	; (1374 <usart_read_gpscb+0x28>)
     1362:	4b05      	ldr	r3, [pc, #20]	; (1378 <usart_read_gpscb+0x2c>)
     1364:	4798      	blx	r3
+															//out of the temporary buffer and into a more permanent buffer for use outside of the isr
 															
 	//if you want to ensure that this code works, here's a super botched way of using a giant buffer forever (comment out above code or else this won't work)
 	//superBuff[ctr >= (SUPERBUFF_LENGTH - 1) ? ctr=0 : ctr] = gps_buff[0];
 	//usart_write_job(&usart_instance, &superBuff[ctr++]);
-	
 }
     1366:	bd10      	pop	{r4, pc}
     1368:	2000005c 	.word	0x2000005c
@@ -4121,6 +4121,7 @@ static inline void system_interrupt_enable(
     1480:	4814      	ldr	r0, [pc, #80]	; (14d4 <configure_usart+0x158>)
     1482:	4b1a      	ldr	r3, [pc, #104]	; (14ec <configure_usart+0x170>)
     1484:	4798      	blx	r3
+	
 	//init and enable gps usart
 	usart_init(&gps_mod, SERCOM4, &gps_conf);
     1486:	4d1a      	ldr	r5, [pc, #104]	; (14f0 <configure_usart+0x174>)
@@ -4182,9 +4183,10 @@ static inline void system_interrupt_enable(
 void configure_usart_callbacks(void)
 {
     14f8:	b510      	push	{r4, lr}
-	//not important yet
-	//usart_register_callback(&usart_instance, usart_read_debugcb, USART_CALLBACK_BUFFER_RECEIVED);
-	//usart_enable_callback(&gps_mod, USART_CALLBACK_BUFFER_RECEIVED);
+		usart_register_callback(&usart_instance, usart_read_debugcb, USART_CALLBACK_BUFFER_RECEIVED);
+		usart_enable_callback(&usart_instance, USART_CALLBACK_BUFFER_RECEIVED);
+	}
+
 	
 	usart_register_callback(&gps_mod, usart_read_gpscb, USART_CALLBACK_BUFFER_RECEIVED);
     14fa:	4c06      	ldr	r4, [pc, #24]	; (1514 <configure_usart_callbacks+0x1c>)
@@ -4205,8 +4207,6 @@ void configure_usart_callbacks(void)
     150c:	430b      	orrs	r3, r1
     150e:	54a3      	strb	r3, [r4, r2]
 	usart_enable_callback(&gps_mod, USART_CALLBACK_BUFFER_RECEIVED);
-	
-
 }
     1510:	bd10      	pop	{r4, pc}
     1512:	46c0      	nop			; (mov r8, r8)

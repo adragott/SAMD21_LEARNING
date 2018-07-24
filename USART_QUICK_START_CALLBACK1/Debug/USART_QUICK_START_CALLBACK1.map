@@ -3226,6 +3226,8 @@ Discarded input sections
  .text          0x00000000        0x0 src/qs_usart_callback.o
  .data          0x00000000        0x0 src/qs_usart_callback.o
  .bss           0x00000000        0x0 src/qs_usart_callback.o
+ .text.usart_read_debugcb
+                0x00000000       0x1c src/qs_usart_callback.o
  .bss.cpu_irq_critical_section_counter
                 0x00000000        0x4 src/qs_usart_callback.o
  .bss.cpu_irq_prev_interrupt_state
@@ -3834,7 +3836,7 @@ OUTPUT(USART_QUICK_START_CALLBACK1.elf elf32-littlearm)
  .comment       0x00000059       0x5a src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
  .comment       0x00000059       0x5a src/qs_usart_callback.o
 
-.debug_info     0x00000000    0x1ea58
+.debug_info     0x00000000    0x1eaa3
  .debug_info    0x00000000      0xb07 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .debug_info    0x00000b07     0x12ad src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
  .debug_info    0x00001db4     0x12b6 src/ASF/sam0/drivers/port/port.o
@@ -3847,7 +3849,7 @@ OUTPUT(USART_QUICK_START_CALLBACK1.elf elf32-littlearm)
  .debug_info    0x00015bd3     0x13f5 src/ASF/sam0/drivers/system/pinmux/pinmux.o
  .debug_info    0x00016fc8      0xa73 src/ASF/sam0/drivers/system/system.o
  .debug_info    0x00017a3b     0x3a49 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
- .debug_info    0x0001b484     0x35d4 src/qs_usart_callback.o
+ .debug_info    0x0001b484     0x361f src/qs_usart_callback.o
 
 .debug_abbrev   0x00000000     0x2a49
  .debug_abbrev  0x00000000      0x22c src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
@@ -3864,7 +3866,7 @@ OUTPUT(USART_QUICK_START_CALLBACK1.elf elf32-littlearm)
  .debug_abbrev  0x0000242f      0x234 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
  .debug_abbrev  0x00002663      0x3e6 src/qs_usart_callback.o
 
-.debug_aranges  0x00000000      0x388
+.debug_aranges  0x00000000      0x390
  .debug_aranges
                 0x00000000       0x28 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .debug_aranges
@@ -3890,9 +3892,9 @@ OUTPUT(USART_QUICK_START_CALLBACK1.elf elf32-littlearm)
  .debug_aranges
                 0x00000328       0x28 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
  .debug_aranges
-                0x00000350       0x38 src/qs_usart_callback.o
+                0x00000350       0x40 src/qs_usart_callback.o
 
-.debug_ranges   0x00000000      0x3f8
+.debug_ranges   0x00000000      0x400
  .debug_ranges  0x00000000       0x18 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .debug_ranges  0x00000018       0x10 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
  .debug_ranges  0x00000028       0x18 src/ASF/sam0/drivers/port/port.o
@@ -3905,9 +3907,9 @@ OUTPUT(USART_QUICK_START_CALLBACK1.elf elf32-littlearm)
  .debug_ranges  0x00000370       0x30 src/ASF/sam0/drivers/system/pinmux/pinmux.o
  .debug_ranges  0x000003a0       0x18 src/ASF/sam0/drivers/system/system.o
  .debug_ranges  0x000003b8       0x18 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
- .debug_ranges  0x000003d0       0x28 src/qs_usart_callback.o
+ .debug_ranges  0x000003d0       0x30 src/qs_usart_callback.o
 
-.debug_macro    0x00000000    0x193e3
+.debug_macro    0x00000000    0x193e9
  .debug_macro   0x00000000      0x512 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .debug_macro   0x00000512      0x8b6 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .debug_macro   0x00000dc8      0x16d src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
@@ -4039,10 +4041,10 @@ OUTPUT(USART_QUICK_START_CALLBACK1.elf elf32-littlearm)
  .debug_macro   0x00018508      0x555 src/ASF/sam0/drivers/system/system.o
  .debug_macro   0x00018a5d      0x2f9 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
  .debug_macro   0x00018d56       0x3a src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
- .debug_macro   0x00018d90      0x5fc src/qs_usart_callback.o
- .debug_macro   0x0001938c       0x57 src/qs_usart_callback.o
+ .debug_macro   0x00018d90      0x602 src/qs_usart_callback.o
+ .debug_macro   0x00019392       0x57 src/qs_usart_callback.o
 
-.debug_line     0x00000000     0x8c26
+.debug_line     0x00000000     0x8c34
  .debug_line    0x00000000      0x8d8 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .debug_line    0x000008d8      0x97f src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
  .debug_line    0x00001257      0x904 src/ASF/sam0/drivers/port/port.o
@@ -4055,9 +4057,9 @@ OUTPUT(USART_QUICK_START_CALLBACK1.elf elf32-littlearm)
  .debug_line    0x000065b1      0x951 src/ASF/sam0/drivers/system/pinmux/pinmux.o
  .debug_line    0x00006f02      0x9fb src/ASF/sam0/drivers/system/system.o
  .debug_line    0x000078fd      0x656 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
- .debug_line    0x00007f53      0xcd3 src/qs_usart_callback.o
+ .debug_line    0x00007f53      0xce1 src/qs_usart_callback.o
 
-.debug_str      0x00000000    0x8c43f
+.debug_str      0x00000000    0x8c464
  .debug_str     0x00000000    0x81c21 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
                               0x824ce (size before relaxing)
  .debug_str     0x00081c21     0x3d51 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
@@ -4082,10 +4084,10 @@ OUTPUT(USART_QUICK_START_CALLBACK1.elf elf32-littlearm)
                               0x825ab (size before relaxing)
  .debug_str     0x0008b35c      0xf25 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
                               0x6e38f (size before relaxing)
- .debug_str     0x0008c281      0x1be src/qs_usart_callback.o
-                              0x8818c (size before relaxing)
+ .debug_str     0x0008c281      0x1e3 src/qs_usart_callback.o
+                              0x881b1 (size before relaxing)
 
-.debug_frame    0x00000000      0x8b0
+.debug_frame    0x00000000      0x8c8
  .debug_frame   0x00000000       0x30 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .debug_frame   0x00000030       0x30 src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
  .debug_frame   0x00000060       0x44 src/ASF/sam0/drivers/port/port.o
@@ -4098,12 +4100,12 @@ OUTPUT(USART_QUICK_START_CALLBACK1.elf elf32-littlearm)
  .debug_frame   0x00000698       0x98 src/ASF/sam0/drivers/system/pinmux/pinmux.o
  .debug_frame   0x00000730       0x38 src/ASF/sam0/drivers/system/system.o
  .debug_frame   0x00000768       0x40 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
- .debug_frame   0x000007a8       0x88 src/qs_usart_callback.o
- .debug_frame   0x00000830       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_udivsi3.o)
- .debug_frame   0x00000850       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_muldi3.o)
- .debug_frame   0x00000884       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc_nano.a(lib_a-init.o)
+ .debug_frame   0x000007a8       0xa0 src/qs_usart_callback.o
+ .debug_frame   0x00000848       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_udivsi3.o)
+ .debug_frame   0x00000868       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v6-m\libgcc.a(_muldi3.o)
+ .debug_frame   0x0000089c       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v6-m\libc_nano.a(lib_a-init.o)
 
-.debug_loc      0x00000000     0x3c13
+.debug_loc      0x00000000     0x3c54
  .debug_loc     0x00000000       0x8b src/ASF/sam0/boards/samd21_xplained_pro/board_init.o
  .debug_loc     0x0000008b      0x13d src/ASF/sam0/drivers/port/port.o
  .debug_loc     0x000001c8      0x9d5 src/ASF/sam0/drivers/sercom/sercom.o
@@ -4115,7 +4117,7 @@ OUTPUT(USART_QUICK_START_CALLBACK1.elf elf32-littlearm)
  .debug_loc     0x00003638      0x36d src/ASF/sam0/drivers/system/pinmux/pinmux.o
  .debug_loc     0x000039a5       0x20 src/ASF/sam0/drivers/system/system.o
  .debug_loc     0x000039c5       0x40 src/ASF/sam0/utils/cmsis/samd21/source/gcc/startup_samd21.o
- .debug_loc     0x00003a05      0x20e src/qs_usart_callback.o
+ .debug_loc     0x00003a05      0x24f src/qs_usart_callback.o
 
 Cross Reference Table
 
@@ -4329,6 +4331,7 @@ usart_instance                                    src/qs_usart_callback.o
 usart_read_buffer_job                             src/ASF/sam0/drivers/sercom/usart/usart_interrupt.o
                                                   src/qs_usart_callback.o
 usart_read_buffer_wait                            src/ASF/sam0/drivers/sercom/usart/usart.o
+usart_read_debugcb                                src/qs_usart_callback.o
 usart_read_gpscb                                  src/qs_usart_callback.o
 usart_read_job                                    src/ASF/sam0/drivers/sercom/usart/usart_interrupt.o
 usart_read_wait                                   src/ASF/sam0/drivers/sercom/usart/usart.o
